@@ -1,57 +1,89 @@
-const Tour = require("./../models/userModels");
+const User = require("./../models/userModels");
 
-exports.getAllUsers = (req, res) => {
-  res.status(200).json({
-    status: "success"
-    // results: users.length,
-    // data: { users }
-  });
-};
-
-exports.getUser = (req, res) => {
-  const id = req.params.id * 1;
-  // const user = users.find(el => el.index === id);
-
-  // res.status(200).json({
-  //   status: "success",
-  //   data: { user }
-  // });
-};
-exports.createUser = (req, res) => {
-  res.status(201).json({
-    status: "success",
-    data: {
-      newUser
-    }
-  });
-};
-
-exports.updateUser = (req, res) => {
-  if (req.params.id * 1 > users.length) {
-    return res.status(404).send({
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({
+      status: "success",
+      results: users.length,
+      data: { users }
+    });
+  } catch (err) {
+    res.status(400).json({
       status: "failed",
-      message: "Invalid ID"
+      message: err
     });
   }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      tour: "Updated tour goes here..."
-    }
-  });
 };
 
-exports.deleteUser = (req, res) => {
-  if (req.params.id * 1 > users.length) {
-    return res.status(404).send({
+exports.getUser = async (req, res) => {
+  try {
+    const id = req.params.id * 1;
+    const user = await User.findById(req.params.id);
+
+    res.status(200).json({
+      status: "success",
+      data: { user }
+    });
+  } catch (err) {
+    res.status(400).json({
       status: "failed",
-      message: "Invalid ID"
+      message: err
     });
   }
+};
+exports.createUser = async (req, res) => {
+  try {
+    const newUser = await User.create(req.body);
 
-  res.status(204).json({
-    status: "success",
-    data: null
-  });
+    res.status(201).json({
+      status: "success",
+      data: {
+        newUser
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err
+    });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    const id = req.params.id * 1;
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err
+    });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(204).json({
+      status: "success",
+      data: null
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err
+    });
+  }
 };
