@@ -57,53 +57,6 @@ class APIFeatures {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    // const queryObj = { ...req.query };
-    // const excludedFields = ["sort", "page", "fields", "limit"];
-    // excludedFields.forEach(field => {
-    //   delete queryObj[field];
-    // });
-
-    // //Query Operator conversion
-    // let queryStr = JSON.stringify(queryObj);
-    // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-    // const tempQueryObj = JSON.parse(queryStr);
-
-    // let query = User.find(tempQueryObj);
-    // const query = User.find()
-    //   .where("gender")
-    //   .equals("male");
-
-    //SORTING
-    // if (req.query.sort) {
-    //   let sortBy = req.query.sort.split(",").join(" ");
-    //   query = query.sort(sortBy);
-    // } else {
-    //   query = query.sort("-createdAt");
-    // }
-
-    //FIELD LIMIT
-    // if (req.query.fields) {
-    //   const fields = req.query.fields.split(",").join(" ");
-    //   query = query.select(fields);
-    // } else {
-    //   query = query.select("-__v");
-    // }
-
-    //PAGINATION AND LIMIT
-    // const page = req.query.page * 1 || 1;
-    // const limit = req.query.limit * 1 || 1;
-    // const skip = (page - 1) * limit;
-    // query = query.skip(skip).limit(limit);
-
-    // if (req.query.page) {
-    //   const numUsers = await User.countDocuments();
-
-    //   if (skip >= numUsers) {
-    //     console.log("error");
-    //     throw new Error("This page does not exist");
-    //   }
-    // }
-
     //EXECUTE QUERY
     const features = new APIFeatures(User.find(), req.query)
       .filter()
